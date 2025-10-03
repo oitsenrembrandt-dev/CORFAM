@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Droguería Corfam</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand" onclick="goHome()" title="Ir a Inicio">
+      <img src="https://i.imgur.com/vFJV8yV.png" alt="Logo Droguería Corfam" class="logo">
+      <div class="brand-text">
+        <div class="brand-name">Droguería Corfam</div>
+        <div class="brand-sub">Tu salud en casa</div>
+      </div>
+    </div>
+
+    <nav class="mainnav" aria-label="Navegación principal">
+      <button onclick="goHome()">🏠 Inicio</button>
+      <button onclick="showSection('categorias')">📂 Categorías</button>
+      <button onclick="showSection('carrito')">🛒 Carrito <span id="miniCount" class="mini-count">0</span></button>
+      <button onclick="showSection('recordatorios')">📅 Recordatorios</button>
+      <button onclick="showSection('chat')">🤖 Chatbot</button>
+      <a class="whatsapp" href="https://wa.me/573143548512" target="_blank" rel="noopener">
+        <img src="https://i.imgur.com/m4BEE87.png" alt="WhatsApp" class="wa-icon">
+        WhatsApp
+      </a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- INICIO -->
+    <section id="inicio" class="seccion visible">
+      <div class="hero">
+        <h1>Bienvenido a Droguería Corfam</h1>
+        <p>Busca, filtra y compra. Domicilios a todo Bogotá.</p>
+        <div class="controls">
+          <input id="search" placeholder="Buscar producto, categoría o marca..." />
+          <select id="sort">
+            <option value="default">Orden: Relevancia</option>
+            <option value="price_asc">Precio ↑</option>
+            <option value="price_desc">Precio ↓</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="productGrid" class="products-grid" aria-live="polite"></div>
+    </section>
+
+    <!-- CATEGORÍAS -->
+    <section id="categorias" class="seccion" style="display:none;">
+      <h2>Categorías</h2>
+      <div id="catsGrid" class="categories-grid"></div>
+    </section>
+
+    <!-- CARRITO -->
+    <section id="carrito" class="seccion" style="display:none;">
+      <h2>🛒 Carrito de compras</h2>
+      <div id="cartItems" class="cart-items"></div>
+      <div class="cart-footer">
+        <div><strong>Total:</strong> <span id="cartTotal">$0</span></div>
+        <div class="cart-actions">
+          <button id="btnCheckout" class="primary">Ir a pagar</button>
+          <button onclick="clearCart()" class="muted">Vaciar carrito</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- RECORDATORIOS -->
+    <section id="recordatorios" class="seccion" style="display:none;">
+      <h2>📅 Recordatorios de medicamentos</h2>
+      <form id="remForm" class="rem-form">
+        <select id="remProduct"></select>
+        <input id="remDatetime" type="datetime-local" />
+        <button type="submit" class="primary">Agregar</button>
+      </form>
+      <div id="remList" class="rem-list"></div>
+    </section>
+
+    <!-- CHATBOT -->
+    <section id="chat" class="seccion" style="display:none;">
+      <h2>🤖 Asistente farmacéutico</h2>
+      <div id="chatBox" class="chat-box" aria-live="polite"></div>
+      <div class="chat-row">
+        <input id="chatInput" placeholder="Escribe tu pregunta... (ej. 'me duele la panza')" />
+        <button id="chatSend" class="primary">Enviar</button>
+      </div>
+      <small class="muted">Respuestas rápidas locales (horarios, domicilios, pagos, diarrea, dolor, planificación, protección).</small>
+    </section>
+
+    <!-- CONTACTO -->
+    <section id="contacto" class="seccion" style="display:none;">
+      <h2>Contacto</h2>
+      <p>Atención por WhatsApp: <a href="https://wa.me/573143548512" target="_blank">3143548512</a></p>
+    </section>
+  </main>
+
+  <!-- Modal pago -->
+  <div id="paymentModal" class="modal" aria-hidden="true" style="display:none;">
+    <div class="modal-box">
+      <h3>Métodos de pago</h3>
+      <div class="pay-grid">
+        <div class="pay-option" onclick="pay('transferencia')">
+          <img src="https://i.imgur.com/WurEaxW.jpeg" alt="Nequi" style="height:40px;"><br>
+          <span>Nequi</span>
+        </div>
+        <div class="pay-option" onclick="pay('transferencia')">
+          <img src="https://i.imgur.com/iI1wucU.png" alt="Daviplata" style="height:40px;"><br>
+          <span>Daviplata</span>
+        </div>
+        <div class="pay-option" onclick="pay('tarjeta')">
+          <span class="icon-credit">💳</span><br>
+          <span>Tarjeta</span>
+        </div>
+        <div class="pay-option" onclick="pay('efectivo')">
+          <span class="icon-cash">💵</span><br>
+          <span>Efectivo (al domiciliario)</span>
+        </div>
+      </div>
+
+      <div id="paymentMessage" class="payment-message"></div>
+
+      <div class="modal-actions">
+        <button onclick="confirmOrder()" class="primary">Confirmar pedido</button>
+        <button onclick="closeModal()" class="muted">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toasts -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
